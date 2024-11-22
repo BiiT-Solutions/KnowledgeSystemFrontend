@@ -1,1 +1,63 @@
-<p>home works!</p>
+<div
+  class="base"
+  (dragover)="uploadState = 'hover'"
+>
+  <div
+    class="main"
+  >
+    <div
+      class="search"
+    >
+      <biit-input-text
+        placeholder="Search"
+      />
+      <button
+        biit-icon
+        [icon]="'search'"
+      ></button>
+    </div>
+
+    <div class="files"
+         infinite-scroll
+         [infiniteScrollThrottle]="300"
+         [infiniteScrollDistance]="1"
+         [infiniteScrollDisabled]="scrollDisabled"
+         [scrollWindow]="false"
+         (scrolled)="onScroll()"
+    >
+      <file-preview
+        *ngFor="let file of files"
+        [file]="file"
+        [selected]="file.uuid === selectedFile?.uuid"
+        (onClick)="openFile($event)"
+      />
+    </div>
+  </div>
+
+  <file-detail
+    [file]="selectedFile"
+    [class.open]="selectedFile"
+    (onUpdate)="onFileUpdate($event)"
+    (onClose)="selectedFile = undefined"
+  />
+</div>
+
+<ngx-file-drop
+  dropZoneLabel="Drop files here"
+  (onFileDrop)="onDrop($event)"
+  (onFileOver)="uploadState = 'hover'; onDrag($event)"
+  (onFileLeave)="uploadState = undefined"
+  [multiple]="false"
+  [ngStyle]="{'pointer-events': uploadState ? 'auto' : 'none'}"
+  style="position: absolute; top: 0; height: 100%; width: 100%;"
+>
+  <ng-template ngx-file-drop-content-tmp></ng-template>
+</ngx-file-drop>
+
+<biit-popup no-header
+  style="pointer-events: none"
+  [ngStyle]="{'opacity': uploadState ? 1 : 0}"
+>
+  <span *ngIf="uploadState === 'hover'">Drop your files here</span>
+  <span *ngIf="uploadState === 'upload'">Uploading...</span>
+</biit-popup>

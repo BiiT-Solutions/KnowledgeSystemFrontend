@@ -1,0 +1,9 @@
+{
+  "alias": "Alias",
+  "description": "Description",
+  "public": "Public",
+  "private": "Private",
+  "owner": "Owner",
+  "upload_date": "Upload Date",
+  "save": "Save"
+}

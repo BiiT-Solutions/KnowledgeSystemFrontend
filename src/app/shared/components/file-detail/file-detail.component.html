@@ -1,0 +1,82 @@
+<div
+  class="container"
+  *transloco="let t"
+>
+  <div
+    class="header"
+  >
+    <span>
+      {{_file?.fileName}}
+    </span>
+    <button
+      biit-icon
+      [icon]="'cross_wide'"
+
+    ></button>
+  </div>
+  <div
+    class="content"
+  >
+    <biit-input-text
+      [ngModel]="_file?.alias"
+      (ngModelChange)="_file.alias = $event"
+      [placeholder]="t('t.alias')"
+    />
+    <div
+      class="thumbnail"
+    >
+      <img
+        *ngIf="_file?.thumbnailUrl"
+        [src]="_file?.thumbnailUrl | thumbnailUrl"
+      />
+      <biit-icon
+        *ngIf="!_file?.thumbnailUrl"
+        [name]="_file?.fileName | thumbnailIcon"
+      />
+      <button
+        biit-icon
+        [icon]="'download_general'"
+      ></button>
+    </div>
+
+    <biit-textarea
+      [ngModel]="_file?.description"
+      (ngModelChange)="_file.description = $event"
+      [placeholder]="t('t.description')"
+      style="height: 5rem"
+    />
+
+    <div
+      class="file-visibility"
+    >
+      <biit-toggle
+        [ngModel]="_file?.public"
+        (ngModelChange)="_file.public = $event"
+      >
+        {{_file?.public ? t('t.public') : t('t.private')}}
+      </biit-toggle>
+    </div>
+
+    <biit-input-text
+      [ngModel]="_file?.createdBy"
+      [placeholder]="t('t.owner')"
+      readonly
+    />
+
+    <biit-input-text
+      [ngModel]="_file?.createdAt | date: 'short'"
+      [placeholder]="t('t.upload_date')"
+      readonly
+    />
+  </div>
+  <div
+    class="footer"
+  >
+    <button
+      biit-button
+
+    >
+      {{t('save')}}
+    </button>
+  </div>
+</div>

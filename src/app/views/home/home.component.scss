@@ -1,0 +1,59 @@
+.base {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-grow: 0;
+  padding: 2rem;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  box-sizing: border-box;
+  border: 3px solid #262626;
+  background: white;
+  padding: 2rem;
+  min-width: 0;
+
+  .search {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+
+    biit-input-text {
+      flex: 1;
+      max-width: 50rem;
+    }
+  }
+}
+
+file-detail {
+  transition: all 1s ease-in-out;
+  width: 0;
+  overflow: hidden;
+
+  &.open {
+    width: 24rem;
+  }
+}
+
+::ng-deep ngx-file-drop {
+  .ngx-file-drop__drop-zone, .ngx-file-drop__content {
+    height: 100% !important;
+    border: none !important;
+  }
+
+  .ngx-file-drop__drop-zone--over {
+    background-color: transparent !important;
+  }
+}
+
+.files {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+  overflow-y: scroll;
+}
