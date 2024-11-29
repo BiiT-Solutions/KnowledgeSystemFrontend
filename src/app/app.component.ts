@@ -9,7 +9,6 @@ import {KnowledgeSystemRootService, SessionService} from "knowledge-system-struc
 import {UserManagerRootService} from "user-manager-structure-lib";
 import {PermissionService} from "./services/permission.service";
 import {User} from "authorization-services-lib";
-import {InfographicEngineRootService} from "infographic-engine-lib";
 
 @Component({
   selector: 'app-root',
@@ -27,7 +26,6 @@ export class AppComponent {
   protected menu: Route[]= [];
   constructor(knowledgeSystemRootService: KnowledgeSystemRootService,
               userManagerRootService: UserManagerRootService,
-              infographicRootService: InfographicEngineRootService,
               biitSnackbarService: BiitSnackbarService,
               biitIconService: BiitIconService,
               protected sessionService: SessionService,
@@ -37,7 +35,6 @@ export class AppComponent {
     this.setLanguage();
     knowledgeSystemRootService.serverUrl = new URL(`${Environment.KNOWLEDGE_SYSTEM_SERVER}`);
     userManagerRootService.serverUrl = new URL(`${Environment.USER_MANAGER_SERVER}`);
-    infographicRootService.serverUrl = new URL(`${Environment.INFOGRAPHIC_ENGINE_SERVER}`);
     biitSnackbarService.setPosition(BiitSnackbarVerticalPosition.TOP, BiitSnackbarHorizontalPosition.CENTER);
     biitIconService.registerIcons(completeIconSet);
     this.setPermissions();

@@ -26,7 +26,6 @@
     "@ngneat/transloco": "^4.3.0",
     "biit-icons-collection": "latest",
     "biit-ui": "latest",
-    "infographic-engine-lib": "latest",
     "knowledge-system-structure-lib": "latest",
     "ngx-file-drop": "^15.0.0",
     "ngx-infinite-scroll": "^15.0.0",
