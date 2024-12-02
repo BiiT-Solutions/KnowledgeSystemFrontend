@@ -14,10 +14,6 @@ import {
   SessionService as UserManagerSessionService,
   OrganizationService, Organization, UserService
 } from 'user-manager-structure-lib';
-import {
-  AuthService as InfographicAuthService,
-  SessionService as InfographicSessionService
-} from 'infographic-engine-lib';
 import {combineLatest} from "rxjs";
 import {PermissionService} from "../../services/permission.service";
 import {ErrorHandler} from "biit-ui/utils";
@@ -42,8 +38,6 @@ export class BiitLoginPageComponent implements OnInit {
               private knowledgeSystemSessionService: KnowledgeSystemSessionService,
               private userManagerAuthService: UserManagerAuthService,
               private userManagerSessionService: UserManagerSessionService,
-              private infographicAuthService: InfographicAuthService,
-              private infographicSessionService: InfographicSessionService,
               private organizationService: OrganizationService,
               private permissionService: PermissionService,
               private userService: UserService,
@@ -69,10 +63,9 @@ export class BiitLoginPageComponent implements OnInit {
       [
         this.knowledgeSystemAuthService.login(new LoginRequest(login.username, login.password)),
         this.userManagerAuthService.login(new LoginRequest(login.username, login.password)),
-        this.infographicAuthService.login(new LoginRequest(login.username, login.password))
       ]
     ).subscribe({
-      next: ([knowledgeSystemResponse, userManagerResponse, infographicResponse]) => {
+      next: ([knowledgeSystemResponse, userManagerResponse]) => {
         const user: User = User.clone(knowledgeSystemResponse.body);
         if (!this.canAccess(user)) {
           this.waiting = false;
@@ -92,11 +85,6 @@ export class BiitLoginPageComponent implements OnInit {
         const userManagerExpiration: number = +userManagerResponse.headers.get(Constants.HEADERS.EXPIRES);
         this.userManagerSessionService.setToken(userManagerToken, userManagerExpiration, login.remember, true);
         this.userManagerSessionService.setUser(user);
-
-        const infographicToken: string = infographicResponse.headers.get(Constants.HEADERS.AUTHORIZATION_RESPONSE);
-        const infographicExpiration: number = +infographicResponse.headers.get(Constants.HEADERS.EXPIRES);
-        this.infographicSessionService.setToken(infographicToken, infographicExpiration, login.remember, true);
-        this.infographicSessionService.setUser(user);
 
         this.organizationService.getAllByLoggedUser().subscribe({
           next: (orgs: Organization[]) => {
