@@ -1,3 +1,7 @@
+<biit-progress-bar
+  *ngIf="loading"
+  [type]="BiitProgressBarType.INDETERMINATE"
+/>
 <div
   class="base"
   (dragover)="uploadState = 'hover'"
@@ -8,30 +12,95 @@
     <div
       class="search"
     >
-      <biit-input-text
-        placeholder="Search"
-      />
-      <button
-        biit-icon
-        [icon]="'search'"
-      ></button>
+      <div class="row">
+        <biit-input-text
+          placeholder="Search"
+        />
+        <button
+          biit-icon
+          [icon]="'search'"
+        ></button>
+      </div>
+      <div class="row filters">
+        <biit-input-text
+          placeholder="Type"
+        />
+        <biit-multiselect
+          [data]="users"
+          [label]="'name'"
+          [title]="'Owner'"
+        />
+        <biit-datepicker
+          placeholder="Upload date"
+        />
+        <biit-multiselect
+          [data]="categories"
+          [label]="'name'"
+          [title]="'Keywords'"
+        />
+      </div>
     </div>
 
-    <div class="files"
-         infinite-scroll
-         [infiniteScrollThrottle]="300"
-         [infiniteScrollDistance]="1"
-         [infiniteScrollDisabled]="scrollDisabled"
-         [scrollWindow]="false"
-         (scrolled)="onScroll()"
+    <div
+      class="selectors"
     >
-      <file-preview
-        *ngFor="let file of files"
-        [file]="file"
-        [selected]="file.uuid === selectedFile?.uuid"
-        (onClick)="openFile($event)"
-      />
+      <div>
+        <button
+          biit-icon
+          [icon]="'plus'"
+        ></button>
+        <button
+          biit-icon
+          [icon]="'minus'"
+        ></button>
+      </div>
+      <div>
+        <biit-toggle-group
+          [(ngModel)]="tableView"
+        >
+          <biit-toggle-button
+            [icon]="'column_selection'"
+            [value]="false"
+          />
+          <biit-toggle-button
+            [icon]="'cauldron'"
+            [value]="true"
+          />
+        </biit-toggle-group>
+      </div>
     </div>
+
+    <ng-container *ngIf="!tableView">
+      <div class="files"
+           infinite-scroll
+           [infiniteScrollThrottle]="300"
+           [infiniteScrollDistance]="1"
+           [infiniteScrollDisabled]="scrollDisabled"
+           [scrollWindow]="false"
+           (scrolled)="onScroll()"
+      >
+        <file-preview
+          *ngFor="let file of files"
+          [file]="file"
+          [selected]="file.uuid === selectedFile?.uuid"
+          (onClick)="openFile($event)"
+        />
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="tableView">
+      <biit-datatable
+        [data]="files"
+        [columns]="tableColumns"
+        [pageSize]="10"
+        [pageSizeList]="[10, 25, 50, 100]"
+        (onSelection)="openFile($event[0])"
+        hideHeader
+        scrollbarH
+        style="height: 100%"
+      ></biit-datatable>
+    </ng-container>
+
   </div>
 
   <file-detail
