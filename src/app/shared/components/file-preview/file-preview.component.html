@@ -1,20 +1,21 @@
 <div
   (click)="onClick.emit(file)"
   [class.selected]="selected"
-  [tooltip]="file.alias ?? file.fileName"
+  [tooltip]="file.alias ?? file.name"
   class="file"
 >
   <div class="info">
-    <span>{{file.alias ?? file.fileName}}</span>
+    <span>{{file.alias ?? file.name}}</span>
   </div>
 
   <img
     *ngIf="file.thumbnailUrl"
+    alt="Thumbnail image"
     [src]="knowledgeSystemRootService.serverUrl + file.thumbnailUrl"
   />
 
   <biit-icon
     *ngIf="!file.thumbnailUrl"
-    [name]="file.fileName | thumbnailIcon"
+    [name]="file.name | thumbnailIcon"
   />
 </div>

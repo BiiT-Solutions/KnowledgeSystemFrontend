@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule, DatePipe} from '@angular/common';
 import {
   BiitDatePickerModule,
@@ -18,14 +18,16 @@ import {BiitButtonModule, BiitIconButtonModule} from "biit-ui/button";
 import {BiitIconModule} from "biit-ui/icon";
 import {ErrorHandler} from "biit-ui/utils";
 import {provideTranslocoScope, TranslocoModule, TranslocoService} from "@ngneat/transloco";
-import {BiitSnackbarService} from "biit-ui/info";
+import {BiitSnackbarService, BiitTooltipModule} from "biit-ui/info";
 import {ThumbnailUrlPipe} from "../../utils/pipes/thumbnail-url.pipe";
 import {ThumbnailIconPipe} from "../../utils/pipes/thumbnail-icon.pipe";
+import {HttpErrorResponse} from "@angular/common/http";
+import {Environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'file-detail',
   standalone: true,
-  imports: [CommonModule, BiitInputTextModule, FormsModule, BiitIconButtonModule, BiitIconModule, BiitTextareaModule, BiitToggleModule, BiitDatePickerModule, BiitMultiselectModule, BiitButtonModule, TranslocoModule, ThumbnailIconPipe, ThumbnailIconPipe, ThumbnailUrlPipe],
+  imports: [CommonModule, BiitInputTextModule, FormsModule, BiitIconButtonModule, BiitIconModule, BiitTextareaModule, BiitToggleModule, BiitDatePickerModule, BiitMultiselectModule, BiitButtonModule, TranslocoModule, ThumbnailIconPipe, ThumbnailIconPipe, ThumbnailUrlPipe, BiitTooltipModule],
   templateUrl: './file-detail.component.html',
   styleUrls: ['./file-detail.component.scss'],
   providers: [provideTranslocoScope({scope: 'components/forms', alias: 't'}), DatePipe]
@@ -81,6 +83,48 @@ export class FileDetailComponent implements OnInit {
     });
   }
 
+  onAddCategory(category: Categorization) {
+    // const tempCat = (category as Categorization).name ? this.categories.find(c => c.name == c.name) : undefined;
+    //
+    // if (tempCat) {
+    //   this._file.categorizations.push(tempCat);
+    // } else {
+    //   this.categorizationService.createByName(category as string).subscribe({
+    //     next: value => {
+    //       this._file.categorizations.push(value);
+    //     },
+    //     error: err => ErrorHandler.notify(err, this.transloco, this.snackbarService)
+    //   });
+    // }
+  }
+
+  onNewCategory(category: string) {
+    const catExists = !this._file.categorizations.some(c => c.name.toLowerCase() == category.toLowerCase()) && this.categories.find(c => c.name.toLowerCase() == category.toLowerCase());
+
+    if (catExists) {
+      this._file.categorizations.push(catExists);
+    } else {
+      this.categorizationService.find(category).subscribe({
+        next: foundCat => {
+          this._file.categorizations.push(foundCat)
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status == 404) {
+            this.categorizationService.createByName(category).subscribe({
+              next: newCat => {
+                this.categories.push(newCat);
+                this._file.categorizations.push(newCat);
+              },
+              error: err =>  ErrorHandler.notify(err, this.transloco, this.snackbarService)
+            });
+          } else {
+            ErrorHandler.notify(err, this.transloco, this.snackbarService);
+          }
+        }
+      });
+    }
+  }
+
   update(): void {
     this.onUpdate.emit(this._file);
   }
@@ -88,4 +132,6 @@ export class FileDetailComponent implements OnInit {
   log(event: any) {
     console.log('DEVELOPMENT LOG', event);
   }
+
+  protected readonly Environment = Environment;
 }

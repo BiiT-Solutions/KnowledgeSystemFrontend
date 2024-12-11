@@ -5,5 +5,7 @@
   "private": "Private",
   "owner": "Owner",
   "upload_date": "Upload Date",
-  "save": "Save"
+  "keywords": "Keywords",
+  "save": "Save",
+  "copy_to_clipboard": "Copy to clipboard"
 }

@@ -5,13 +5,15 @@
   <div
     class="header"
   >
-    <span>
-      {{_file?.fileName}}
+    <span
+      [tooltip]="_file?.name"
+    >
+      {{_file?.name}}
     </span>
     <button
       biit-icon
       [icon]="'cross_wide'"
-
+      (click)="onClose.emit()"
     ></button>
   </div>
   <div
@@ -27,11 +29,12 @@
     >
       <img
         *ngIf="_file?.thumbnailUrl"
+        alt="Thumbnail image"
         [src]="_file?.thumbnailUrl | thumbnailUrl"
       />
       <biit-icon
         *ngIf="!_file?.thumbnailUrl"
-        [name]="_file?.fileName | thumbnailIcon"
+        [name]="_file?.name | thumbnailIcon"
       />
       <button
         biit-icon
@@ -55,6 +58,19 @@
       >
         {{_file?.public ? t('t.public') : t('t.private')}}
       </biit-toggle>
+      <biit-input-text
+        *ngIf="_file?.public"
+        [ngModel]="Environment.KNOWLEDGE_SYSTEM_SERVER + _file?.publicUrl"
+        readonly
+        style="margin-left: 0.5rem"
+      />
+      <button
+        *ngIf="_file?.public"
+        biit-icon
+        [icon]="'linkage'"
+        [tooltip]="'Copy to clipboard'"
+        style="flex-shrink: 0"
+      ></button>
     </div>
 
     <biit-input-text
@@ -68,15 +84,27 @@
       [placeholder]="t('t.upload_date')"
       readonly
     />
+
+    <biit-multiselect
+      *ngIf="_file"
+      [type]="BiitMultiselectType.CHIPS"
+      [ngModel]="_file?.categorizations"
+      [data]="categories"
+      [label]="'name'"
+      [title]="t('t.keywords')"
+      (ngModelChange)="_file.categorizations = $event"
+      (onCreate)="onNewCategory($event)"
+    />
+
   </div>
   <div
     class="footer"
   >
     <button
       biit-button
-
+      (click)="onUpdate.emit(_file)"
     >
-      {{t('save')}}
+      {{t('t.save')}}
     </button>
   </div>
 </div>

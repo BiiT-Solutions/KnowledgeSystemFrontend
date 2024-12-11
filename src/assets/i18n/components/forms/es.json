@@ -5,5 +5,7 @@
   "private": "Privado",
   "owner": "Titular",
   "upload_date": "Fecha de creación",
-  "save": "Guardar"
+  "keywords": "Categorías",
+  "save": "Guardar",
+  "copy_to_clipboard": "Copiar al portapapeles"
 }

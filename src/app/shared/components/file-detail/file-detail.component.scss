@@ -37,7 +37,6 @@
   padding-right: 1rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-  overflow-x: hidden;
 
   .thumbnail {
     height: 12rem;
@@ -62,6 +61,13 @@
       right: 0;
     }
   }
+
+  .file-visibility {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 34px;
+  }
 }
 
 .footer {
@@ -73,4 +79,10 @@
 
 ::ng-deep biit-input-text .biit-input, ::ng-deep biit-input-text input {
   min-width: 0 !important;
+}
+
+::ng-deep biit-multiselect .dropdown-list {
+  position: fixed;
+  max-width: 19.625rem;
+  min-width: 0;
 }
