@@ -56,7 +56,8 @@
       </div>
       <div>
         <biit-toggle-group
-          [(ngModel)]="tableView"
+          [ngModel]="tableView"
+          (ngModelChange)="changeView($event)"
         >
           <biit-toggle-button
             [icon]="'column_selection'"
@@ -97,6 +98,9 @@
         (onSelection)="openFile($event[0])"
         hideHeader
         scrollbarH
+        serverSide
+        [page]="page"
+        (onPageChange)="onTablePageChange($event)"
         style="height: 100%"
       ></biit-datatable>
     </ng-container>
@@ -114,7 +118,7 @@
 <ngx-file-drop
   dropZoneLabel="Drop files here"
   (onFileDrop)="onDrop($event)"
-  (onFileOver)="uploadState = 'hover'; onDrag($event)"
+  (onFileOver)="uploadState = 'hover';"
   (onFileLeave)="uploadState = undefined"
   [multiple]="false"
   [ngStyle]="{'pointer-events': uploadState ? 'auto' : 'none'}"
@@ -130,3 +134,11 @@
   <span *ngIf="uploadState === 'hover'">Drop your files here</span>
   <span *ngIf="uploadState === 'upload'">Uploading...</span>
 </biit-popup>
+
+<ng-template #dateCell let-row="row" let-value="value" let-i="index">
+  {{ value | date: 'short' }}
+</ng-template>
+
+<ng-template #userCell let-row="row" let-value="value" let-i="index">
+  {{ value | userUuidName: users }}
+</ng-template>

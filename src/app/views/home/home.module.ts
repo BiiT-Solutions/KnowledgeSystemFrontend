@@ -13,6 +13,7 @@ import {FilePreviewComponent} from "../../shared/components/file-preview/file-pr
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import {BiitProgressBarModule} from "biit-ui/info";
 import {BiitDatatableModule} from "biit-ui/table";
+import {UserUuidNamePipe} from "../../shared/utils/pipes/user-uuid-name.pipe";
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {BiitDatatableModule} from "biit-ui/table";
     BiitDatePickerModule,
     BiitToggleGroupModule,
     BiitDatatableModule,
+    UserUuidNamePipe,
   ]
 })
 export class HomeModule { }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, QueryList, TemplateRef, ViewChildren} from '@angular/core';
 import {
   Categorization,
   CategorizationService,
@@ -7,41 +7,44 @@ import {
   FileEntryService
 } from "knowledge-system-structure-lib";
 import {ErrorHandler} from "biit-ui/utils";
-import {TranslocoService} from "@ngneat/transloco";
+import {provideTranslocoScope, TranslocoService} from "@ngneat/transloco";
 import {BiitProgressBarType, BiitSnackbarService} from "biit-ui/info";
 import {FileSystemFileEntry, NgxFileDropEntry} from "ngx-file-drop";
 import {HttpEventType} from "@angular/common/http";
-import {DatatableColumn} from "biit-ui/table";
+import {DatatableColumn, Page} from "biit-ui/table";
 import {BasicUser, BasicUserService} from "user-manager-structure-lib";
 import {combineLatest} from "rxjs";
+import {CategorizationListPipe} from "../../shared/utils/pipes/categorization-list.pipe";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  providers: [provideTranslocoScope({scope: 'components/forms', alias: 't'}), DatePipe]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
+  @ViewChildren('dateCell') dateCell: QueryList<TemplateRef<any>>;
+  @ViewChildren('userCell') userCell: QueryList<TemplateRef<any>>;
+
   files: FileEntry[] = [];
   categories: Categorization[] = [];
   users: BasicUser[] = [];
   selectedFile: FileEntry;
   scrollDisabled = false;
   loading = false;
-  tableView = false;
-  query: FileEntryQuery = new FileEntryQuery();
 
   uploadState:
     | 'hover'
     | 'upload'
     | undefined;
 
-  tableColumns = [
-    new DatatableColumn('Name', 'name'),
-    new DatatableColumn('Description', 'description'),
-    new DatatableColumn('Owner', 'uploadedBy'),
-    new DatatableColumn('Upload Date', 'uploadDate'),
-    new DatatableColumn('Keywords', 'categorizations'),
-  ];
+  tableView = false;
+  tableColumns: DatatableColumn[];
+  page: Page = new Page(0, 10, 0);
+  query: FileEntryQuery = new FileEntryQuery();
+
+  protected readonly BiitProgressBarType = BiitProgressBarType;
 
   constructor(
     private fileService: FileEntryService,
@@ -58,13 +61,23 @@ export class HomeComponent implements OnInit {
       this.categorizationService.getAll(),
       this.basicUserService.getAll()
     ]).subscribe({
-      next: ([files, categories, users]) => {
-        this.files = files.map(FileEntry.clone);
+      next: ([fileResponse, categories, users]) => {
+        this.files = fileResponse.files.map(FileEntry.clone);
         this.categories = categories.map(Categorization.clone);
         this.users = users.map(BasicUser.clone);
       },
       error: err => ErrorHandler.notify(err, this.transloco, this.snackbar)
     }).add(() => this.loading = false);
+  }
+
+  ngAfterViewInit() {
+    this.tableColumns = [
+      new DatatableColumn('Name', 'name'),
+      new DatatableColumn('Description', 'description'),
+      new DatatableColumn('Owner', 'createdBy', true, undefined, false, undefined, this.userCell.first),
+      new DatatableColumn('Upload Date', 'createdAt', true, undefined, false, undefined, this.dateCell.first),
+      new DatatableColumn('Keywords', 'categorizations', true, undefined, false, new CategorizationListPipe()),
+    ];
   }
 
   openFile(file: FileEntry) {
@@ -77,7 +90,6 @@ export class HomeComponent implements OnInit {
 
   onDrag(event: any) {
     event.preventDefault();
-    console.log(event);
   }
 
   onDrop(files: NgxFileDropEntry[]) {
@@ -90,7 +102,17 @@ export class HomeComponent implements OnInit {
               console.log((100 * httpEvent.loaded) / httpEvent.total);
             }
             if (httpEvent.type === HttpEventType.Response) {
-              this.files.unshift(httpEvent.body);
+              if (this.tableView) {
+                this.fileService.getAll(this.page.pageNumber * this.page.pageSize, this.page.pageSize).subscribe({
+                  next: response => {
+                    this.files = response.files.map(FileEntry.clone);
+                    this.page.totalElements = response.total;
+                  },
+                  error: err => ErrorHandler.notify(err, this.transloco, this.snackbar)
+                });
+              } else {
+                this.files.unshift(httpEvent.body);
+              }
               this.uploadState = undefined;
             }
           },
@@ -107,9 +129,9 @@ export class HomeComponent implements OnInit {
 
   onScroll() {
     this.fileService.getAll(this.files.length, 30).subscribe({
-      next: files => {
-        this.files.push(...files);
-        if (!files.length || files.length < 30) {
+      next: response => {
+        this.files.push(...response.files);
+        if (!response.files.length || response.files.length < 30) {
           this.scrollDisabled = true;
         }
       },
@@ -129,5 +151,33 @@ export class HomeComponent implements OnInit {
     }).add(() => this.loading = false);
   }
 
-  protected readonly BiitProgressBarType = BiitProgressBarType;
+  changeView(tableView: boolean) {
+    if (tableView !== this.tableView) {
+      this.loading = true;
+      this.tableView = tableView;
+      this.files = [];
+      this.page.pageNumber = 0;
+
+      this.fileService.getAll(0, this.tableView ? this.page.pageSize : 30).subscribe({
+        next: response => {
+          console.log(response)
+          this.files = response.files.map(FileEntry.clone);
+          this.page.totalElements = response.total;
+        },
+        error: err => ErrorHandler.notify(err, this.transloco, this.snackbar)
+      }).add(() => this.loading = false);
+    }
+  }
+
+  onTablePageChange(newPage: Page) {
+    this.page = newPage;
+
+    this.fileService.getAll(this.page.pageNumber * this.page.pageSize, this.page.pageSize).subscribe({
+      next: response => {
+        this.files = response.files.map(FileEntry.clone);
+        this.page.totalElements = response.total;
+      },
+      error: err => ErrorHandler.notify(err, this.transloco, this.snackbar)
+    });
+  }
 }
