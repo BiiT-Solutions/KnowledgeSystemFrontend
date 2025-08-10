@@ -38,6 +38,7 @@
     "@angular-devkit/build-angular": "v15-lts",
     "@angular/cli": "v15-lts",
     "@angular/compiler-cli": "v15-lts",
+    "@types/node": "^18.17.17",
     "@types/jasmine": "~4.3.0",
     "cpx2": "^6.0.1",
     "del-cli": "^5.0.0",
