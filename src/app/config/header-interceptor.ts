@@ -1,4 +1,4 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {SessionService as KnowledgeSystemSessionService} from "knowledge-system-structure-lib";
@@ -24,16 +24,20 @@ export class HeaderInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
+    const reqHeaders: HttpHeaders = req.headers;
+    reqHeaders.append(Constants.HEADERS.CACHE_CONTROL, 'no-cache');
+    reqHeaders.append(Constants.HEADERS.PRAGMA, 'no-cache');
+
     if (req.url.includes(Environment.KNOWLEDGE_SYSTEM_SERVER)){
       const request: HttpRequest<any> = req.clone({
-        headers: req.headers.append(Constants.HEADERS.AUTHORIZATION, `Bearer ${knowledgeSystemAuthToken}`)
+        headers: reqHeaders.append(Constants.HEADERS.AUTHORIZATION, `Bearer ${knowledgeSystemAuthToken}`)
       });
       return next.handle(request);
     }
 
     if (req.url.includes(Environment.USER_MANAGER_SERVER)){
       const request: HttpRequest<any> = req.clone({
-        headers: req.headers.append(Constants.HEADERS.AUTHORIZATION, `Bearer ${userManagerAuthToken}`)
+        headers: reqHeaders.append(Constants.HEADERS.AUTHORIZATION, `Bearer ${userManagerAuthToken}`)
       });
       return next.handle(request);
     }
