@@ -4,7 +4,7 @@ import {Constants} from "../../shared/constants";
 import {BiitProgressBarType, BiitSnackbarService, NotificationType} from "@biit-solutions/wizardry-theme/info";
 import {TRANSLOCO_SCOPE, TranslocoService} from "@ngneat/transloco";
 import {ActivatedRoute, Router} from "@angular/router";
-import {LoginRequest, User} from "@biit-solutions/user-manager-structure";
+import {LoginRequest, User} from "@biit-solutions/authorization-services";
 import {
   AuthService as KnowledgeSystemAuthService,
   SessionService as KnowledgeSystemSessionService
@@ -13,7 +13,7 @@ import {
   AuthService as UserManagerAuthService,
   SessionService as UserManagerSessionService,
   OrganizationService, Organization, UserService
-} from 'user-manager-structure-lib';
+} from '@biit-solutions/user-manager-structure';
 import {combineLatest} from "rxjs";
 import {PermissionService} from "../../services/permission.service";
 import {ErrorHandler} from "@biit-solutions/wizardry-theme/utils";

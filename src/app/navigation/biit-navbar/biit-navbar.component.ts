@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {Route, Router} from '@angular/router';
 import {provideTranslocoScope} from '@ngneat/transloco';
-import {User} from '@biit-solutions/user-manager-structure';
+import {User} from "@biit-solutions/authorization-services";
 import {SessionService} from "@biit-solutions/knowledge-system-structure";
 import {ContextMenuService, ContextMenuComponent} from '@perfectmemory/ngx-contextmenu'
 
