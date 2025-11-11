@@ -1,8 +1,8 @@
 import {HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
-import {SessionService as KnowledgeSystemSessionService} from "knowledge-system-structure-lib";
-import {SessionService as UserManagerSessionService} from "user-manager-structure-lib";
+import {SessionService as KnowledgeSystemSessionService} from "@biit-solutions/knowledge-system-structure";
+import {SessionService as UserManagerSessionService} from "@biit-solutions/user-manager-structure";
 import {Constants} from "../shared/constants";
 import {Router} from "@angular/router";
 import {Environment} from "../../environments/environment";

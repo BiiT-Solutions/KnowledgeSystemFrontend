@@ -1,6 +1,9 @@
 {
-  "name": "knowledge-system",
-  "version": "0.0.132",
+  "name": "@biit-solutions/knowledge-system",
+  "version": "0.1.0",
+  "license": "AGPLv3",
+  "author": "BiiT Sourcing Solutions",
+  "private": false,
   "scripts": {
     "ng": "ng",
     "start": "npm run prepare:translations && ng serve",
@@ -10,10 +13,9 @@
     "prepare:translations": "npm run clean:translations && cpx \"./node_modules/biit-ui/assets/i18n/**/*.json\" \"./src/assets/i18n/biit-ui/\"",
     "prepare:docs": "cpx ./README.md ./dist/knowledge-system && echo \"{\\\"name\\\": \\\"`node -e \"console.log(require('./package.json').name);\"\n`\\\", \\\"version\\\": \\\"`node -e \"console.log(require('./package.json').version);\"\n`\\\"}\" > ./dist/knowledge-system/package.json",
     "prepare:publication": "npm run build && npm run prepare:docs",
-    "publish": "npm run prepare:publication && npm publish ./dist/knowledge-system",
+    "publish": "npm run prepare:publication && npm publish --access=public ./dist/knowledge-system",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "v15-lts",
     "@angular/common": "v15-lts",
@@ -24,14 +26,14 @@
     "@angular/platform-browser-dynamic": "v15-lts",
     "@angular/router": "v15-lts",
     "@ngneat/transloco": "^4.3.0",
-    "biit-icons-collection": "latest",
-    "biit-ui": "latest",
-    "knowledge-system-structure-lib": "latest",
+    "@biit-solutions/biit-icons-collection": "latest",
+    "@biit-solutions/wizardry-theme": "latest",
+    "@biit-solutions/knowledge-system-structure": "latest",
+    "@biit-solutions/user-manager-structure": "latest",
     "ngx-file-drop": "^15.0.0",
     "ngx-infinite-scroll": "^15.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "user-manager-structure-lib": "latest",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {
@@ -49,5 +51,9 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "typescript": "~4.9.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BiiT-Solutions/KnowledgeSystemFrontend.git"
   }
 }

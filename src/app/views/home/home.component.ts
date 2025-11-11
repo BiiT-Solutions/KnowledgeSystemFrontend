@@ -5,14 +5,14 @@ import {
   FileEntry,
   FileEntryQuery,
   FileEntryService
-} from "knowledge-system-structure-lib";
-import {ErrorHandler} from "biit-ui/utils";
+} from "@biit-solutions/knowledge-system-structure";
+import {ErrorHandler} from "@biit-solutions/wizardry-theme/utils";
 import {provideTranslocoScope, TranslocoService} from "@ngneat/transloco";
-import {BiitProgressBarType, BiitSnackbarService} from "biit-ui/info";
+import {BiitProgressBarType, BiitSnackbarService} from "@biit-solutions/wizardry-theme/info";
 import {FileSystemFileEntry, NgxFileDropEntry} from "ngx-file-drop";
 import {HttpEventType} from "@angular/common/http";
-import {DatatableColumn, Page} from "biit-ui/table";
-import {BasicUser, BasicUserService} from "user-manager-structure-lib";
+import {DatatableColumn, Page} from "@biit-solutions/wizardry-theme/table";
+import {BasicUser, BasicUserService} from "@biit-solutions/user-manager-structure";
 import {combineLatest} from "rxjs";
 import {CategorizationListPipe} from "../../shared/utils/pipes/categorization-list.pipe";
 import {DatePipe} from "@angular/common";

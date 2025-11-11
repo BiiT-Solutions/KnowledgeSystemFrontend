@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {FileEntry} from "knowledge-system-structure-lib";
+import {FileEntry} from "@biit-solutions/knowledge-system-structure";
 import {FileFormat} from "../types/file-format";
 import {
   biitIcon,
@@ -8,7 +8,7 @@ import {
   biitIconFileDoc,
   biitIconFilePdf, biitIconFilePpt,
   biitIconFileTxt, biitIconFileUnknown, biitIconFileVideo, biitIconFileXls, biitIconFileZip
-} from "biit-icons-collection";
+} from "@biit-solutions/biit-icons-collection";
 
 @Pipe({
   name: 'thumbnailIcon',

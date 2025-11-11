@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {Categorization} from "knowledge-system-structure-lib";
+import {Categorization} from "@biit-solutions/knowledge-system-structure";
 
 @Pipe({
   name: 'categorizationList',

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {BasicUser} from "user-manager-structure-lib";
+import {BasicUser} from "@biit-solutions/user-manager-structure";
 
 @Pipe({
   name: 'userUuidName',

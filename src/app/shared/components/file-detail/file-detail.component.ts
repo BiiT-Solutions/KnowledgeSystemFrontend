@@ -6,19 +6,19 @@ import {
   BiitMultiselectModule, BiitMultiselectType,
   BiitTextareaModule,
   BiitToggleModule
-} from "biit-ui/inputs";
+} from "@biit-solutions/wizardry-theme/inputs";
 import {FormsModule} from "@angular/forms";
 import {
   Categorization,
   CategorizationService,
   FileEntry,
   KnowledgeSystemRootService
-} from "knowledge-system-structure-lib"
-import {BiitButtonModule, BiitIconButtonModule} from "biit-ui/button";
-import {BiitIconModule} from "biit-ui/icon";
-import {ErrorHandler} from "biit-ui/utils";
+} from "@biit-solutions/knowledge-system-structure"
+import {BiitButtonModule, BiitIconButtonModule} from "@biit-solutions/wizardry-theme/button";
+import {BiitIconModule} from "@biit-solutions/wizardry-theme/icon";
+import {ErrorHandler} from "@biit-solutions/wizardry-theme/utils";
 import {provideTranslocoScope, TranslocoModule, TranslocoService} from "@ngneat/transloco";
-import {BiitSnackbarService, BiitTooltipModule} from "biit-ui/info";
+import {BiitSnackbarService, BiitTooltipModule} from "@biit-solutions/wizardry-theme/info";
 import {ThumbnailUrlPipe} from "../../utils/pipes/thumbnail-url.pipe";
 import {ThumbnailIconPipe} from "../../utils/pipes/thumbnail-icon.pipe";
 import {HttpErrorResponse} from "@angular/common/http";
