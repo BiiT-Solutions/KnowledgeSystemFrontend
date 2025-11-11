@@ -38,7 +38,7 @@ jobs:
           npm --no-git-tag-version version patch
           new_version=`cat package.json | grep -Po '(?<="version": ")[^"]*'`
           git add --all
-          git tag boarding-pass-${new_version}
+          git tag knowledge-system-${new_version}
           git commit -m "Version: ${new_version}"
 
       - name: Push changes
